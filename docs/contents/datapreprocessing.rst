@@ -11,6 +11,85 @@ Data Pre-Processing
    Statistical and machine learning models will be made available once fully
    validated.
 
+
+----------------
+Brain extraction
+----------------
+Brain extraction will segment the intracranial volume from T1w structural MRI.
+From this, we will derive the variable `DLICV` that is commonly used as covariate.
+
+^^^^^
+Setup
+^^^^^
+
+The `DeepMRSeg` software is distributed as Python package that runs on all major
+platforms.
+We recommend the installation in a native Python virtual environment as shown
+below.
+
+.. tabs::
+
+   .. code-tab:: text Linux/macOS
+
+      python -m venv --clear .env
+      . .env/bin/activate
+      python -m pip install --upgrade pip
+      python -m pip install git+https://github.com/CBICA/DeepMRSeg.git
+
+      # Download the DLICV model
+      deepmrseg_downloadmodel --model dlicv
+
+      # Test single image
+      deepmrseg_apply --task dlicv \\
+         --inImg example/SUB-01_T1.nii.gz \\
+         --outImg example/Protocols/DLICV/SUB-01_T1_brainmask.nii.gz
+
+   .. code-tab:: text Windows 10/11
+
+      python.exe -m venv --clear .env
+      .env/Scripts/Activate.ps1
+      python -m pip install --upgrade pip
+      python -m pip install git+https://github.com/CBICA/DeepMRSeg.git
+
+      # Download the DLICV model
+      deepmrseg_downloadmodel --model dlicv
+
+      # Test single image
+      deepmrseg_apply --task dlicv `
+         --inImg example/SUB-01_T1.nii.gz `
+         --outImg example/Protocols/DLICV/SUB-01_T1_brainmask.nii.gz
+
+
+^^^^^^^^^^^^^^^^
+Run segmentation
+^^^^^^^^^^^^^^^^
+
+Once available, use FSL to extract a table with volumes.
+This requires FSL to be installed and the command `fslstats` being in `PATH`.
+In the below example, we have a list of MRI IDs for which we expect the
+segmented brainmask to be available.
+
+
+.. tabs::
+
+   .. code-tab:: shell Linux/macOS
+
+      # Write DLICV values into `DLICV.csv`
+      echo "MRID,DLICV" > DLICV.csv
+
+      while read -r line;
+      do
+         MRID=$(echo $line|cut -d ',' -f2;)
+         brainmask=example/Protocols/DLICV/${MRID}_T1_brainmask.nii.gz
+         echo -n "${MRID},"
+         echo $(fslstats ${brainmask} -V | cut -d ' ' -f2)
+      done < <(tail -n +2 participants.csv) | tee -a example/Protocols/DLICV.csv
+
+   .. code-tab:: text Windows 10/11
+
+      No documentation for doing this step in PowerShell is available yet.
+
+
 --------------------
 MUSE/RAVENS Pipeline
 --------------------
@@ -35,9 +114,9 @@ Additionally, make sure that an environment variable `$TMPDIR` points to a
 temporary scratch space that can be used to store intermediate results.
 Otherwise, it will be set to `$PWD` (i.e. the current working directory).
 
-^^^^^^^^^^^^^^^^
-Complete example
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
+MUSE pre-processing
+^^^^^^^^^^^^^^^^^^^
 
 1. Clone the istaging git repository
 

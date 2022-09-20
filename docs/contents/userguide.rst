@@ -33,7 +33,7 @@ with the full path.
 
 .. tabs::
 
-   .. code-tab:: text Windows 10/11
+   .. code-tab:: shell Windows 10/11
 
          python --version
          # or, if `python` not in PATH
