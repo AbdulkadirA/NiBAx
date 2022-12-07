@@ -1,0 +1,16 @@
+:py:mod:`NiBAx.plugins.SPAREs`
+==============================
+
+.. py:module:: NiBAx.plugins.SPAREs
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   SPAREs/index.rst
+   computeSPAREs/index.rst
+
+

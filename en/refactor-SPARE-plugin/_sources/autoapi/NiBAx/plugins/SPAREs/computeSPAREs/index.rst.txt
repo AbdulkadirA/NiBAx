@@ -1,0 +1,44 @@
+:py:mod:`NiBAx.plugins.SPAREs.computeSPAREs`
+============================================
+
+.. py:module:: NiBAx.plugins.SPAREs.computeSPAREs
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   NiBAx.plugins.SPAREs.computeSPAREs.BrainAgeWorker
+   NiBAx.plugins.SPAREs.computeSPAREs.SPAREs
+
+
+
+
+.. py:class:: BrainAgeWorker(data, model)
+
+   Bases: :py:obj:`PyQt5.QtCore.QObject`
+
+   .. py:attribute:: done
+      
+
+      
+
+   .. py:attribute:: progress
+      
+
+      
+
+   .. py:method:: run(self)
+
+
+
+.. py:class:: SPAREs(data, model)
+
+   .. py:method:: getResults(self)
+
+
+
